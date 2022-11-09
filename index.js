@@ -8,11 +8,30 @@ const types = {
 
 function generate_pattern(rows, cols, type) {
     string = ""
+    full = "*".repeat(cols) + "<br/>"
     switch(type) {
+        case types.Crossed:
+            string += full
+            rows -= 2
+            cols -= 2
+            for (let j=0; j<rows; j++) {
+                string += "*"
+                for (let i=0; i<rows; i++) {
+                    if ((rows-j-1) == i || (i-j-1) == rows) {
+                        string += "*"
+                    } else {
+                        string += "&nbsp;&nbsp"
+                    }
+                }
+                string += "*<br/>"
+
+            }
+            string += full
+            break;
+
         case types.Hollow:
             // if the rows aren't greater than 2 we won't break and the solid code will execute
             if (rows > 2) {
-                full = "*".repeat(cols) + "<br/>"
                 string += full
                 rows -= 2
                 cols -= 2
@@ -42,11 +61,13 @@ function generate_pattern(rows, cols, type) {
     return string
 }
 
-rows = +prompt("Rows: ")
-
-cols = +prompt("Columns: ")
-
 type = types[prompt("Input a type: Solid, Hollow or Crossed")]
+rows = +prompt("Rows: ")
+cols = rows
+if (type != types.Crossed){
+    cols = +prompt("Columns: ")
+}
+
 
 document.write("<p>" + generate_pattern(rows, cols, type) + "</p>")
 
